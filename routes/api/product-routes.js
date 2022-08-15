@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
     include: [
       {
         model: Category,
-        attributes: ['category_name'],
+        attributes: ['category_name']
       },
       {
         model: Tag,
@@ -52,7 +52,7 @@ router.get('/:id', (req, res) => {
       res.status(404).json({ message: "Not found" });
       return;
     }
-    res,json(dbProductData);
+    res.json(dbProductData);
   })
   .catch(err => {
     console.log(err);
@@ -66,6 +66,7 @@ router.post('/', (req, res) => {
     product_name: req.body.product_name,
     price: req.body.price,
     stock: req.body.stock,
+    category_id: req.body.category_id,
     tagIds: req.body.tagIds
   })
     .then((product) => {
@@ -85,7 +86,7 @@ router.post('/', (req, res) => {
     .then((productTagIds) => res.status(200).json(productTagIds))
     .catch((err) => {
       console.log(err);
-      res.status(500).json(err);
+      res.status(400).json(err);
     });
 });
 
@@ -127,7 +128,7 @@ router.put('/:id', (req, res) => {
     .then((updatedProductTags) => res.json(updatedProductTags))
     .catch((err) => {
       // console.log(err);
-      res.status(500).json(err);
+      res.status(400).json(err);
     });
 });
 
@@ -135,8 +136,8 @@ router.delete('/:id', (req, res) => {
   // delete one product by its `id` value
   Product.destroy({
     where: {
-      id: req.params.id,
-    },
+      id: req.params.id
+    }
   })
   .then((dbProductData) => {
     if (!dbProductData) {
